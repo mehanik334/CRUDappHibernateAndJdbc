@@ -23,7 +23,7 @@ public class JdbcDeveloperRepositoryImpl implements DeveloperRepository {
                 "                join developer_skill ds on d.id = ds.developer_id\n" +
                 "                join skill s on ds.skill_id = s.skill_id\n" +
                 "                where d.id = " + aLong + " ;";
-        
+
         try (Connection connection = ConnectionPoolDB.getConnection();
              Statement statement = connection.createStatement()) {
 
