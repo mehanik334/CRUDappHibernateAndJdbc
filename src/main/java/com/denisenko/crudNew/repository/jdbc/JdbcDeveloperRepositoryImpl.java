@@ -2,7 +2,9 @@ package com.denisenko.crudNew.repository.jdbc;
 
 import com.denisenko.crudNew.model.Developer;
 import com.denisenko.crudNew.model.Skill;
+import com.denisenko.crudNew.model.Team;
 import com.denisenko.crudNew.repository.DeveloperRepository;
+import com.denisenko.crudNew.repository.SkillRepository;
 import com.denisenko.crudNew.utils.ConnectionPoolDB;
 
 import java.sql.*;
@@ -11,6 +13,7 @@ import java.util.List;
 
 public class JdbcDeveloperRepositoryImpl implements DeveloperRepository {
 
+    private SkillRepository skillRepository = new JdbcSkillRepositoryImpl();
 
     @Override
     public Developer getById(Long aLong) {
@@ -19,9 +22,10 @@ public class JdbcDeveloperRepositoryImpl implements DeveloperRepository {
         List<Skill> skillList = new ArrayList<>();
         resultDev.setSkills(skillList);
 
-        String sqlGetById = "select d.id,d.first_name,d.last_name,s.name,s.skill_id from developer d\n" +
+        String sqlGetById = "select d.id,d.first_name,d.last_name,s.name,s.skill_id, t.team_name, d.team_id from developer d\n" +
                 "                join developer_skill ds on d.id = ds.developer_id\n" +
                 "                join skill s on ds.skill_id = s.skill_id\n" +
+                "                join team t on d.team_id = t.id\n" +
                 "                where d.id = " + aLong + " ;";
 
         try (Connection connection = ConnectionPoolDB.getConnection();
@@ -38,20 +42,22 @@ public class JdbcDeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public Developer save(Developer developer) {
-        String sqlSaveDeveloper = "INSERT INTO developer(id, first_name, last_name) VALUES (?,?,?);";
-        String sqlSaveSkillDeveloper = "INSERT INTO developer_skill(developer_id, skill_id) VALUES (?,?);";
+        String sqlSaveDeveloper = "INSERT INTO developer(id, first_name, last_name, team_id) VALUES (?,?,?,?);";
+        String sqlSaveSkillDeveloper = "INSERT INTO developer_skill(developer_id) VALUES (?,?);";
         try (Connection connection = ConnectionPoolDB.getConnection();
+             PreparedStatement preparedStatement1 = connection.prepareStatement(sqlSaveSkillDeveloper);
              PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveDeveloper)) {
             preparedStatement.setLong(1, developer.getId());
             preparedStatement.setString(2, developer.getFirstName());
             preparedStatement.setString(3, developer.getLastName());
+            preparedStatement.setLong(4, developer.getTeam().getId());
             preparedStatement.execute();
 
-            PreparedStatement preparedStatement1 = connection.prepareStatement(sqlSaveSkillDeveloper);
             for (int i = 0; i < developer.getSkills().size(); i++) {
                 preparedStatement1.setLong(1, developer.getId());
                 preparedStatement1.setLong(2, developer.getSkills().get(i).getId());
                 preparedStatement1.execute();
+                skillRepository.save(developer.getSkills().get(i));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,14 +91,23 @@ public class JdbcDeveloperRepositoryImpl implements DeveloperRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
         return allDevelopers;
     }
 
     @Override
     public Developer update(Developer developer) {
-        return null;
+        String sqlUpdateDeveloper = "update developer set first_name = ?, last_name = ?, team_id = ? where id = ?;";
+        try (Connection connection = ConnectionPoolDB.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateDeveloper)) {
+
+            preparedStatement.setString(1, developer.getFirstName());
+            preparedStatement.setString(2, developer.getLastName());
+            preparedStatement.setLong(3, developer.getTeam().getId());
+            preparedStatement.setLong(4, developer.getId());
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return getById(developer.getId());
     }
 
     private void mapDeveloperFromDB(Developer developer, ResultSet resultSet) throws SQLException {
@@ -102,6 +117,7 @@ public class JdbcDeveloperRepositoryImpl implements DeveloperRepository {
             developer.setLastName(resultSet.getString("last_name"));
             developer.getSkills().add(new Skill(resultSet.getLong("skill_id"),
                     resultSet.getString("name")));
+            developer.setTeam(new Team(resultSet.getLong("team_id"), resultSet.getString("team_name")));
         }
     }
 

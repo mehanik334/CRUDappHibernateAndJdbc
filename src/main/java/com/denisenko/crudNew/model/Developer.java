@@ -7,6 +7,7 @@ public class Developer {
     private String firstName;
     private String lastName;
     private List<Skill> skills;
+    private Team team;
 
     public Developer() {
     }
@@ -27,6 +28,14 @@ public class Developer {
         this.firstName = firstName;
         this.lastName = lastName;
         this.skills = skills;
+    }
+
+    public Developer(Long id, String firstName, String lastName, List<Skill> skills, Team team) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.skills = skills;
+        this.team = team;
     }
 
     public List<Skill> getSkills() {
@@ -59,6 +68,14 @@ public class Developer {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     @Override
