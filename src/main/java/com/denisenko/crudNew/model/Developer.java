@@ -30,6 +30,13 @@ public class Developer {
         this.skills = skills;
     }
 
+    public Developer(Long id, String firstName, String lastName, Team team) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.team = team;
+    }
+
     public Developer(Long id, String firstName, String lastName, List<Skill> skills, Team team) {
         this.id = id;
         this.firstName = firstName;

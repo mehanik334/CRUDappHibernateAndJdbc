@@ -1,33 +1,39 @@
 package com.denisenko.crudNew;
 
-import com.denisenko.crudNew.model.Developer;
-import com.denisenko.crudNew.model.Skill;
-import com.denisenko.crudNew.repository.DeveloperRepository;
-import com.denisenko.crudNew.repository.SkillRepository;
-import com.denisenko.crudNew.repository.TeamRepository;
-import com.denisenko.crudNew.repository.jdbc.JdbcDeveloperRepositoryImpl;
-import com.denisenko.crudNew.repository.jdbc.JdbcSkillRepositoryImpl;
-import com.denisenko.crudNew.repository.jdbc.JdbcTeamRepositoryImpl;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.denisenko.crudNew.view.DeveloperView;
+import com.denisenko.crudNew.view.SkillView;
+import com.denisenko.crudNew.view.TeamView;
+
+import java.util.Scanner;
 
 public class RunApp {
     public static void main(String[] args) {
-        DeveloperRepository developerRepository = new JdbcDeveloperRepositoryImpl();
-        SkillRepository skillRepository = new JdbcSkillRepositoryImpl();
-        TeamRepository teamRepository = new JdbcTeamRepositoryImpl();
-        System.out.println(teamRepository.getById(1L));
-//       Developer d = developerRepository.getById(1L);
-//        System.out.println(d);
-//        Developer developer = new Developer(4L,"Dr","Fer");
-//        List<Skill> skillList = new ArrayList<>();
-//        skillList.add(new Skill(1L,"Java"));
-//        developer.setSkills(skillList);
-//        System.out.println(developerRepository.save(developer));
-//        developerRepository.deleteById(4L);
-//        System.out.println(developerRepository.getAll());
-//        System.out.println(skillRepository.update(new Skill(3L,"Frame")));
-//        System.out.println(skillRepository.getAll());
+        System.out.println("Select and enter the number that matches your choice");
+        System.out.println("1 - work with developer");
+        System.out.println("2 - work with skill");
+        System.out.println("3 - work with team");
+        Scanner scanner = new Scanner(System.in);
+
+        if (scanner.hasNext()) {
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1 -> {
+                    DeveloperView developerView = new DeveloperView();
+                    developerView.showDeveloperView();
+                }
+                case 2 -> {
+                    SkillView skillView = new SkillView();
+                    skillView.showSkillView();
+                }
+                case 3 -> {
+                    TeamView teamView = new TeamView();
+                    teamView.showTeamView();
+                }
+                default -> {
+                    System.out.println("Wrong entering");
+                }
+            }
+        }
     }
 }
