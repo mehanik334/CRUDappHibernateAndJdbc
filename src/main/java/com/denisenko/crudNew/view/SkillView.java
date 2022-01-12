@@ -40,7 +40,7 @@ public class SkillView {
     }
 
     private void showDeletedSkill(Scanner scanner) {
-        skillController.deleteSkillById(scanner.nextLong());
+        if(skillController.deleteSkillById(scanner.nextLong()))
         System.out.println("Skill delete");
     }
 

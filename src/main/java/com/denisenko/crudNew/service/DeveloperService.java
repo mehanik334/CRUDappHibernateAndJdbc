@@ -18,8 +18,8 @@ public class DeveloperService {
         return developerRepository.getById(id);
     }
 
-    public void delete(Long id) {
-        developerRepository.deleteById(id);
+    public boolean delete(Long id) {
+        return developerRepository.deleteById(id);
     }
 
     public List<Developer> getAll() {

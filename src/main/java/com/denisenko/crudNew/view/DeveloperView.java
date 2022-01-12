@@ -42,7 +42,7 @@ public class DeveloperView {
     }
 
     private void showDeletedDeveloper(Scanner scanner) {
-        developerController.deleteDeveloperById(scanner.nextLong());
+        if(developerController.deleteDeveloperById(scanner.nextLong()))
         System.out.println("Developer delete");
     }
 

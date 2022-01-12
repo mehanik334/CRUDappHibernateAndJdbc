@@ -18,8 +18,8 @@ public class SkillService {
         return skillRepository.getById(id);
     }
 
-    public void delete(Long id) {
-        skillRepository.deleteById(id);
+    public boolean delete(Long id) {
+        return skillRepository.deleteById(id);
     }
 
     public List<Skill> getAll() {

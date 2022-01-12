@@ -40,7 +40,7 @@ public class TeamView {
     }
 
     private void showDeletedTeam(Scanner scanner) {
-        teamController.deleteTeamById(scanner.nextLong());
+        if(teamController.deleteTeamById(scanner.nextLong()))
         System.out.println("Skill delete");
     }
 

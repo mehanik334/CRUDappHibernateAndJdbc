@@ -41,17 +41,19 @@ public class JdbcSkillRepositoryImpl implements SkillRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public boolean deleteById(Long aLong) {
         String sqlDeleteSkillFromDB = "delete s from skill s\n" +
                 "join developer_skill ds on s.skill_id = ds.skill_id\n" +
                 "where ds.skill_id = ?;";
+        Boolean deleteBoolRes = false;
         try (Connection connection = ConnectionPoolDB.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteSkillFromDB)) {
             preparedStatement.setLong(1, aLong);
-            preparedStatement.execute();
+            deleteBoolRes = preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return !deleteBoolRes;
     }
 
     @Override
@@ -76,9 +78,9 @@ public class JdbcSkillRepositoryImpl implements SkillRepository {
         Skill updateSkill = null;
         try (Connection connection = ConnectionPoolDB.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateSkillInDb)) {
-            preparedStatement.setString(1,skill.getName());
-            preparedStatement.setLong(2,skill.getId());
-           if(!preparedStatement.execute()) updateSkill = skill;
+            preparedStatement.setString(1, skill.getName());
+            preparedStatement.setLong(2, skill.getId());
+            if (!preparedStatement.execute()) updateSkill = skill;
         } catch (SQLException e) {
             e.printStackTrace();
         }

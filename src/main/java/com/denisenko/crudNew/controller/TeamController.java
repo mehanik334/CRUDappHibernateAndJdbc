@@ -25,8 +25,8 @@ public class TeamController {
         return teamRepository.save(team);
     }
 
-    public void deleteTeamById(Long idTeam) {
-        teamRepository.deleteById(idTeam);
+    public boolean deleteTeamById(Long idTeam) {
+        return teamRepository.deleteById(idTeam);
     }
 
     public Team updateTeam(Team team) {

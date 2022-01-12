@@ -10,6 +10,14 @@ public class TeamService {
 
     private TeamRepository teamRepository = new JdbcTeamRepositoryImpl();
 
+    public TeamRepository getTeamRepository() {
+        return teamRepository;
+    }
+
+    public void setTeamRepository(TeamRepository teamRepository) {
+        this.teamRepository = teamRepository;
+    }
+
     public Team save(Team team) {
         return teamRepository.save(team);
     }
@@ -18,8 +26,8 @@ public class TeamService {
         return teamRepository.getById(id);
     }
 
-    public void delete(Long id) {
-        teamRepository.deleteById(id);
+    public boolean delete(Long id) {
+        return teamRepository.deleteById(id);
     }
 
     public List<Team> getAll() {

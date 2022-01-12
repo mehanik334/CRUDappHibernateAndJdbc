@@ -66,11 +66,15 @@ public class JdbcDeveloperRepositoryImpl implements DeveloperRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public boolean deleteById(Long aLong) {
+        Boolean deleteRes = false;
         String sqlDeleteFromDeveloper = "delete from developer where developer.id = ?";
         String sqlDeleteFromDeveloperSkill = "DELETE FROM developer_skill WHERE developer_id IN (SELECT id FROM developer WHERE id = ?);";
-        deleteDeveloperFromDB(sqlDeleteFromDeveloper, aLong);
-        deleteDeveloperFromDB(sqlDeleteFromDeveloperSkill, aLong);
+
+        deleteRes = deleteDeveloperFromDB(sqlDeleteFromDeveloper, aLong);
+        deleteRes = deleteDeveloperFromDB(sqlDeleteFromDeveloperSkill, aLong);
+
+        return !deleteRes;
     }
 
     @Override
@@ -121,13 +125,15 @@ public class JdbcDeveloperRepositoryImpl implements DeveloperRepository {
         }
     }
 
-    private void deleteDeveloperFromDB(String sql, Long id) {
+    private boolean deleteDeveloperFromDB(String sql, Long id) {
+        Boolean deleteDevRes = false;
         try (Connection connection = ConnectionPoolDB.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
-            preparedStatement.execute();
+            deleteDevRes = preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return deleteDevRes;
     }
 }

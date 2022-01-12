@@ -16,7 +16,7 @@ public class JdbcTeamRepositoryImpl implements TeamRepository {
 
     @Override
     public Team getById(Long aLong) {
-        String sqlTeamById = "Select name from team where id = ?";
+        String sqlTeamById = "Select team_name from team where id = ?";
         String sqlDeveloperTeamById = "Select id from developer where team_id = ?";
         Team teamResultFromDb = new Team();
         teamResultFromDb.setId(aLong);
@@ -28,7 +28,7 @@ public class JdbcTeamRepositoryImpl implements TeamRepository {
             preparedStatement.setLong(1, aLong);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                teamResultFromDb.setName(resultSet.getString("name"));
+                teamResultFromDb.setName(resultSet.getString("team_name"));
             }
 
             preparedStatement1.setLong(1, aLong);
@@ -60,16 +60,18 @@ public class JdbcTeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public boolean deleteById(Long aLong) {
         String sqlDeleteTeamFromDb = "DELETE t from team t where t.id = ?;";
+        Boolean deleteBoolRes = false;
         try (Connection connection = ConnectionPoolDB.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteTeamFromDb)) {
 
             preparedStatement.setLong(1, aLong);
-            preparedStatement.execute();
+           deleteBoolRes = preparedStatement.execute();
         }catch (SQLException e) {
             e.printStackTrace();
         }
+        return !deleteBoolRes;
     }
 
     @Override
@@ -81,7 +83,7 @@ public class JdbcTeamRepositoryImpl implements TeamRepository {
 
             ResultSet resultSet = statement.executeQuery(sqlGetAllTeams);
             while (resultSet.next()) {
-                teamList.add(new Team(resultSet.getLong("id"), resultSet.getString("name")));
+                teamList.add(new Team(resultSet.getLong("id"), resultSet.getString("team_name")));
             }
         }catch (SQLException e) {
             e.printStackTrace();

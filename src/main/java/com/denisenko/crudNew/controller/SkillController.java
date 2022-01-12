@@ -26,8 +26,8 @@ public class SkillController {
         return skillRepository.save(skill);
     }
 
-    public void deleteSkillById(Long idSkill) {
-        skillRepository.deleteById(idSkill);
+    public boolean deleteSkillById(Long idSkill) {
+        return skillRepository.deleteById(idSkill);
     }
 
     public Skill updateSkill(Skill skill) {

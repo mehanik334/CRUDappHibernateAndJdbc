@@ -26,8 +26,8 @@ public class DeveloperController {
         return developerRepository.save(developer);
     }
 
-    public void deleteDeveloperById(Long idDeveloper) {
-        developerRepository.deleteById(idDeveloper);
+    public boolean deleteDeveloperById(Long idDeveloper) {
+        return developerRepository.deleteById(idDeveloper);
     }
 
     public Developer updateDeveloper(Developer developer) {
