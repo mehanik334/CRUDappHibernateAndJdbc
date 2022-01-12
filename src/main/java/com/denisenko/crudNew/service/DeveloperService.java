@@ -10,6 +10,14 @@ public class DeveloperService {
 
     private DeveloperRepository developerRepository = new JdbcDeveloperRepositoryImpl();
 
+    public DeveloperRepository getDeveloperRepository() {
+        return developerRepository;
+    }
+
+    public void setDeveloperRepository(DeveloperRepository developerRepository) {
+        this.developerRepository = developerRepository;
+    }
+
     public Developer save(Developer developer) {
         return developerRepository.save(developer);
     }

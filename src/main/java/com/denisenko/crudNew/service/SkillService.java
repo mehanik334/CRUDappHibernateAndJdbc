@@ -10,6 +10,14 @@ public class SkillService {
 
     private SkillRepository skillRepository = new JdbcSkillRepositoryImpl();
 
+    public SkillRepository getSkillRepository() {
+        return skillRepository;
+    }
+
+    public void setSkillRepository(SkillRepository skillRepository) {
+        this.skillRepository = skillRepository;
+    }
+
     public Skill save(Skill skill) {
         return skillRepository.save(skill);
     }
