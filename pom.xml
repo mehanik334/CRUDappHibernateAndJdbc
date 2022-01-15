@@ -51,6 +51,15 @@
             <version>4.6.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-maven-plugin -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>4.7.0</version>
+        </dependency>
+
+
+
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -71,5 +80,23 @@
 
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.7.0</version>
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/sasha</url>
+                    <username>root</username>
+                    <password>aE7253oe</password>
+                    <changeLogFile>
+                        ./src/main/resources/db/migration/master.xml
+                    </changeLogFile>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

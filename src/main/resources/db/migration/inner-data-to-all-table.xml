@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="5" author="Sasha">
+        <sql>
+            INSERT INTO developer(id, first_name, last_name, team_id)
+            VALUES (1, 'Alex', 'Denisenko', 1);
+            INSERT INTO developer(id, first_name, last_name, team_id)
+            VALUES (2, 'Alena', 'Chernenko', 2);
+            INSERT INTO developer(id, first_name, last_name, team_id)
+            VALUES (3, 'Dima', 'Ivanov', 1);
+
+            INSERT INTO skill(skill_id, name)
+            VALUES (1, 'Java');
+            INSERT INTO skill(skill_id, name)
+            VALUES (2, 'Spring');
+            INSERT INTO skill(skill_id, name)
+            VALUES (3, 'Hibernate');
+            INSERT INTO skill(skill_id, name)
+            VALUES (4, 'C++');
+
+            INSERT INTO developer_skill(developer_id, skill_id)
+            VALUES (1, 1);
+            INSERT INTO developer_skill(developer_id, skill_id)
+            VALUES (1, 2);
+            INSERT INTO developer_skill(developer_id, skill_id)
+            VALUES (2, 4);
+            INSERT INTO developer_skill(developer_id, skill_id)
+            VALUES (3, 1);
+            INSERT INTO developer_skill(developer_id, skill_id)
+            VALUES (3, 2);
+            INSERT INTO developer_skill(developer_id, skill_id)
+            VALUES (3, 3);
+
+            INSERT INTO team(id, name)
+            VALUES (1, 'Java team');
+            INSERT INTO team(id, name)
+            VALUES (2, 'C++ team');
+        </sql>
+    </changeSet>
+</databaseChangeLog>
