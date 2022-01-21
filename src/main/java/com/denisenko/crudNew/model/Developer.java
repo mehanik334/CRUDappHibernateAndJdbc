@@ -1,12 +1,13 @@
 package com.denisenko.crudNew.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Developer {
     private Long id;
     private String firstName;
     private String lastName;
-    private List<Skill> skills;
+    private List<Skill> skills = new ArrayList<>();
     private Team team;
 
     public Developer() {
@@ -92,6 +93,7 @@ public class Developer {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", skills=" + skills +
+                ", team=" + team +
                 '}';
     }
 }

@@ -4,7 +4,7 @@ import com.denisenko.crudNew.model.Developer;
 import com.denisenko.crudNew.model.Team;
 import com.denisenko.crudNew.repository.DeveloperRepository;
 import com.denisenko.crudNew.repository.TeamRepository;
-import com.denisenko.crudNew.utils.ConnectionPoolDB;
+import com.denisenko.crudNew.utils.JdbcUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,9 +21,8 @@ public class JdbcTeamRepositoryImpl implements TeamRepository {
         Team teamResultFromDb = new Team();
         teamResultFromDb.setId(aLong);
         List<Developer> developerList = new ArrayList<>();
-        try (Connection connection = ConnectionPoolDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlTeamById);
-             PreparedStatement preparedStatement1 = connection.prepareStatement(sqlDeveloperTeamById)) {
+        try (PreparedStatement preparedStatement = JdbcUtils.getPrepareStatement(sqlTeamById);
+             PreparedStatement preparedStatement1 = JdbcUtils.getPrepareStatement(sqlDeveloperTeamById)) {
 
             preparedStatement.setLong(1, aLong);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -46,8 +45,7 @@ public class JdbcTeamRepositoryImpl implements TeamRepository {
     @Override
     public Team save(Team team) {
         String sqlInsertTeamToDb = "insert into team values (?,?);";
-        try (Connection connection = ConnectionPoolDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertTeamToDb)) {
+        try (PreparedStatement preparedStatement = JdbcUtils.getPrepareStatement(sqlInsertTeamToDb)) {
 
             preparedStatement.setLong(1, team.getId());
             preparedStatement.setString(2, team.getName());
@@ -63,8 +61,7 @@ public class JdbcTeamRepositoryImpl implements TeamRepository {
     public boolean deleteById(Long aLong) {
         String sqlDeleteTeamFromDb = "DELETE t from team t where t.id = ?;";
         Boolean deleteBoolRes = false;
-        try (Connection connection = ConnectionPoolDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteTeamFromDb)) {
+        try (PreparedStatement preparedStatement = JdbcUtils.getPrepareStatement(sqlDeleteTeamFromDb)) {
 
             preparedStatement.setLong(1, aLong);
            deleteBoolRes = preparedStatement.execute();
@@ -77,13 +74,20 @@ public class JdbcTeamRepositoryImpl implements TeamRepository {
     @Override
     public List<Team> getAll() {
         String sqlGetAllTeams = "SELECT * from team;";
+        List<Developer> developerList = developerRepository.getAll();
         List<Team> teamList = new ArrayList<>();
-        try (Connection connection = ConnectionPoolDB.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = JdbcUtils.getConnection().createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(sqlGetAllTeams);
             while (resultSet.next()) {
                 teamList.add(new Team(resultSet.getLong("id"), resultSet.getString("team_name")));
+            }
+            for(int i = 0; i < developerList.size(); i++) {
+                for(int j = 0; j < teamList.size(); j++) {
+                    if(developerList.get(i).getTeam().getId().equals(teamList.get(j).getId())) {
+                        teamList.get(j).getDevelopers().add(developerList.get(i));
+                    }
+                }
             }
         }catch (SQLException e) {
             e.printStackTrace();
@@ -94,8 +98,7 @@ public class JdbcTeamRepositoryImpl implements TeamRepository {
     @Override
     public Team update(Team team) {
         String sqlUpdateTeam = "update team set name = ? where id = ?;";
-        try (Connection connection = ConnectionPoolDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateTeam)) {
+        try (PreparedStatement preparedStatement = JdbcUtils.getPrepareStatement(sqlUpdateTeam)) {
 
             preparedStatement.setString(1, team.getName());
             preparedStatement.setLong(2, team.getId());

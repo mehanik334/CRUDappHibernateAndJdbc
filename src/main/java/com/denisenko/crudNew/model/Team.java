@@ -1,11 +1,12 @@
 package com.denisenko.crudNew.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Team {
     private Long id;
     private String name;
-    private List<Developer> developers;
+    private List<Developer> developers = new ArrayList<>();
 
     public Team() {
     }

@@ -2,7 +2,7 @@ package com.denisenko.crudNew.repository.jdbc;
 
 import com.denisenko.crudNew.model.Skill;
 import com.denisenko.crudNew.repository.SkillRepository;
-import com.denisenko.crudNew.utils.ConnectionPoolDB;
+import com.denisenko.crudNew.utils.JdbcUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,8 +13,7 @@ public class JdbcSkillRepositoryImpl implements SkillRepository {
     public Skill getById(Long aLong) {
         String sqlSkillById = "select name from skill where skill_id = ?;";
         Skill skillResultFromDB = new Skill();
-        try (Connection connection = ConnectionPoolDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlSkillById)) {
+        try (PreparedStatement preparedStatement = JdbcUtils.getPrepareStatement(sqlSkillById)) {
             preparedStatement.setLong(1, aLong);
             ResultSet resultSet = preparedStatement.executeQuery();
             skillResultFromDB.setId(aLong);
@@ -30,8 +29,7 @@ public class JdbcSkillRepositoryImpl implements SkillRepository {
     @Override
     public Skill save(Skill skill) {
         String sqlInsertSkillToDb = "insert into skill values (?,?);";
-        try (Connection connection = ConnectionPoolDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertSkillToDb)) {
+        try (PreparedStatement preparedStatement = JdbcUtils.getPrepareStatement(sqlInsertSkillToDb)) {
             preparedStatement.setLong(1, skill.getId());
             preparedStatement.setString(2, skill.getName());
         } catch (SQLException e) {
@@ -46,8 +44,7 @@ public class JdbcSkillRepositoryImpl implements SkillRepository {
                 "join developer_skill ds on s.skill_id = ds.skill_id\n" +
                 "where ds.skill_id = ?;";
         Boolean deleteBoolRes = false;
-        try (Connection connection = ConnectionPoolDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteSkillFromDB)) {
+        try (PreparedStatement preparedStatement = JdbcUtils.getPrepareStatement(sqlDeleteSkillFromDB)) {
             preparedStatement.setLong(1, aLong);
             deleteBoolRes = preparedStatement.execute();
         } catch (SQLException e) {
@@ -60,8 +57,7 @@ public class JdbcSkillRepositoryImpl implements SkillRepository {
     public List<Skill> getAll() {
         List<Skill> skillList = new ArrayList<>();
         String sqlGetAllSkillFromDB = "select * from skill;";
-        try (Connection connection = ConnectionPoolDB.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = JdbcUtils.getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlGetAllSkillFromDB);
             while (resultSet.next()) {
                 skillList.add(new Skill(resultSet.getLong("skill_id"), resultSet.getString("name")));
@@ -76,8 +72,7 @@ public class JdbcSkillRepositoryImpl implements SkillRepository {
     public Skill update(Skill skill) {
         String sqlUpdateSkillInDb = "update skill set name = ? where skill_id = ?;";
         Skill updateSkill = null;
-        try (Connection connection = ConnectionPoolDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateSkillInDb)) {
+        try (PreparedStatement preparedStatement = JdbcUtils.getPrepareStatement(sqlUpdateSkillInDb)) {
             preparedStatement.setString(1, skill.getName());
             preparedStatement.setLong(2, skill.getId());
             if (!preparedStatement.execute()) updateSkill = skill;

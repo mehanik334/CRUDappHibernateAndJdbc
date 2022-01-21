@@ -1,36 +1,35 @@
 package com.denisenko.crudNew.controller;
 
 import com.denisenko.crudNew.model.Skill;
-import com.denisenko.crudNew.repository.SkillRepository;
-import com.denisenko.crudNew.repository.jdbc.JdbcSkillRepositoryImpl;
+import com.denisenko.crudNew.service.SkillService;
 
 import java.util.List;
 
 public class SkillController {
 
-    private SkillRepository skillRepository;
+    private SkillService skillService;
 
     public SkillController() {
-        skillRepository = new JdbcSkillRepositoryImpl();
+        skillService = new SkillService();
     }
 
     public Skill getByIdSkill(Long id) {
-        return skillRepository.getById(id);
+        return skillService.getById(id);
     }
 
     public List<Skill> getAllSkills() {
-        return skillRepository.getAll();
+        return skillService.getAll();
     }
 
     public Skill saveSkill(Skill skill) {
-        return skillRepository.save(skill);
+        return skillService.save(skill);
     }
 
     public boolean deleteSkillById(Long idSkill) {
-        return skillRepository.deleteById(idSkill);
+        return skillService.delete(idSkill);
     }
 
     public Skill updateSkill(Skill skill) {
-        return skillRepository.update(skill);
+        return skillService.update(skill);
     }
 }

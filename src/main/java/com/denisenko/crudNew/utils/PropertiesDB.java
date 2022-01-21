@@ -17,6 +17,7 @@ public class PropertiesDB {
             listProperties.add(properties.getProperty("db.url"));
             listProperties.add(properties.getProperty("db.login"));
             listProperties.add(properties.getProperty("db.password"));
+            listProperties.add(properties.getProperty("driver.class.name"));
 
         } catch (IOException e) {
             e.printStackTrace();

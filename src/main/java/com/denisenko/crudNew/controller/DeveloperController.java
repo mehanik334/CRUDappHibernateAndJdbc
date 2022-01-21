@@ -1,36 +1,35 @@
 package com.denisenko.crudNew.controller;
 
 import com.denisenko.crudNew.model.Developer;
-import com.denisenko.crudNew.repository.DeveloperRepository;
-import com.denisenko.crudNew.repository.jdbc.JdbcDeveloperRepositoryImpl;
+import com.denisenko.crudNew.service.DeveloperService;
 
 import java.util.List;
 
 public class DeveloperController {
 
-    private DeveloperRepository developerRepository;
+    private DeveloperService developerService;
 
     public DeveloperController() {
-        developerRepository = new JdbcDeveloperRepositoryImpl();
+        developerService = new DeveloperService();
     }
 
     public Developer getByIdDeveloper(Long id) {
-        return developerRepository.getById(id);
+        return developerService.getById(id);
     }
 
     public List<Developer> getAllDevelopers() {
-        return developerRepository.getAll();
+        return developerService.getAll();
     }
 
     public Developer saveDeveloper(Developer developer) {
-        return developerRepository.save(developer);
+        return developerService.save(developer);
     }
 
     public boolean deleteDeveloperById(Long idDeveloper) {
-        return developerRepository.deleteById(idDeveloper);
+        return developerService.delete(idDeveloper);
     }
 
     public Developer updateDeveloper(Developer developer) {
-        return developerRepository.update(developer);
+        return developerService.update(developer);
     }
 }
