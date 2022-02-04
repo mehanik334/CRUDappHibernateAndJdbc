@@ -2,13 +2,14 @@ package com.denisenko.crudNew.service;
 
 import com.denisenko.crudNew.model.Developer;
 import com.denisenko.crudNew.repository.DeveloperRepository;
+import com.denisenko.crudNew.repository.hibernate.HibernateDeveloperRepository;
 import com.denisenko.crudNew.repository.jdbc.JdbcDeveloperRepositoryImpl;
 
 import java.util.List;
 
 public class DeveloperService {
 
-    private DeveloperRepository developerRepository = new JdbcDeveloperRepositoryImpl();
+    private DeveloperRepository developerRepository = new HibernateDeveloperRepository();
 
     public DeveloperRepository getDeveloperRepository() {
         return developerRepository;

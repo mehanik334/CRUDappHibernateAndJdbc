@@ -1,11 +1,21 @@
 package com.denisenko.crudNew.model;
 
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "team")
 public class Team {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "team_name")
     private String name;
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Developer> developers = new ArrayList<>();
 
     public Team() {
@@ -55,7 +65,6 @@ public class Team {
         return "Team{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", developers=" + developers +
                 '}';
     }
 }

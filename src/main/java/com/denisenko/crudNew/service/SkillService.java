@@ -2,13 +2,14 @@ package com.denisenko.crudNew.service;
 
 import com.denisenko.crudNew.model.Skill;
 import com.denisenko.crudNew.repository.SkillRepository;
+import com.denisenko.crudNew.repository.hibernate.HibernateSkillRepository;
 import com.denisenko.crudNew.repository.jdbc.JdbcSkillRepositoryImpl;
 
 import java.util.List;
 
 public class SkillService {
 
-    private SkillRepository skillRepository = new JdbcSkillRepositoryImpl();
+    private SkillRepository skillRepository = new HibernateSkillRepository();
 
     public SkillRepository getSkillRepository() {
         return skillRepository;
