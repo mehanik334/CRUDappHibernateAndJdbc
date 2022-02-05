@@ -18,36 +18,32 @@ import java.util.Scanner;
 
 public class RunApp {
     public static void main(String[] args) {
-//        System.out.println("Select and enter the number that matches your choice");
-//        System.out.println("1 - work with developer");
-//        System.out.println("2 - work with skill");
-//        System.out.println("3 - work with team");
-//        Scanner scanner = new Scanner(System.in);
-//
-//        if (scanner.hasNext()) {
-//            int choice = scanner.nextInt();
-//            switch (choice) {
-//                case 1 -> {
-//                    DeveloperView developerView = new DeveloperView();
-//                    developerView.showDeveloperView();
-//                }
-//                case 2 -> {
-//                    SkillView skillView = new SkillView();
-//                    skillView.showSkillView();
-//                }
-//                case 3 -> {
-//                    TeamView teamView = new TeamView();
-//                    teamView.showTeamView();
-//                }
-//                default -> {
-//                    System.out.println("Wrong entering");
-//                }
-//            }
-//        }
-//        SkillRepository skillRepository = new HibernateSkillRepository();
-//        Skill skill = skillRepository.getById(1L);
-//        System.out.println(skill);
-        DeveloperRepository developerRepository = new HibernateDeveloperRepository();
-        developerRepository.save(new Developer("AAA","BBB"));
+        System.out.println("Select and enter the number that matches your choice");
+        System.out.println("1 - work with developer");
+        System.out.println("2 - work with skill");
+        System.out.println("3 - work with team");
+        Scanner scanner = new Scanner(System.in);
+
+        if (scanner.hasNext()) {
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1 -> {
+                    DeveloperView developerView = new DeveloperView();
+                    developerView.showDeveloperView();
+                }
+                case 2 -> {
+                    SkillView skillView = new SkillView();
+                    skillView.showSkillView();
+                }
+                case 3 -> {
+                    TeamView teamView = new TeamView();
+                    teamView.showTeamView();
+                }
+                default -> {
+                    System.out.println("Wrong entering");
+                }
+            }
+        }
+
     }
 }

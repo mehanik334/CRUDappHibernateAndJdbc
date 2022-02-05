@@ -3,7 +3,6 @@ package com.denisenko.crudNew.view;
 import com.denisenko.crudNew.controller.DeveloperController;
 import com.denisenko.crudNew.controller.TeamController;
 import com.denisenko.crudNew.model.Developer;
-import com.denisenko.crudNew.model.Team;
 
 import java.util.Scanner;
 
